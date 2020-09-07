@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Binary Combinations</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $("#calc").on("click", function() {
+            if ($('#firstPartComb').val().length === 0) {
+                alert("Not empty, pls!");
+                return false;
+            }
+
+            $("#result").find("tr:gt(0)").remove();
+            let array = [$('#firstPartComb').val()];
+            for (let i = 0; i < array[0].length; i++) {
+                let bufArray = [];
+                for (let j = 0; j < array.length; j++) {
+                    let buf = array[j];
+                    buf = setCharAt(buf, i, buf[i] === '0' ? '1' : '0');
+                    bufArray.push(buf);
+                }
+                array = array.concat(bufArray);
+                AddRow(i + 1, bufArray, bufArray.length);
+            }
+            AddRow('Total:', array.sort(), array.length);
+        });
+    });
+
+    function AddRow(i, text, count) {
+        $('#result').append(
+            `<tr>
+                <td>${i}</td>
+                <td>${text}</td>
+                <td>${count}</td>
+            </tr>`);
+    }
+
+    function setCharAt(str, index, chr) {
+        if (index > str.length - 1)
+            return str;
+        return str.substr(0, index) + chr + str.substr(index + 1);
+    }
+    </script>
+</head>
+
+<body>
+    <span>First part of combination:</span>
+    <input type="input" id="firstPartComb" onkeypress='return event.charCode >= 48 && event.charCode <= 49' maxlength='15' placeholder='For example 01' />
+    <input type="submit" id="calc" />
+    <table id="result" border="1px solid">
+        <tr style="font-weight:bold">
+            <td>#</td>
+            <td>Added</td>
+            <td>Count</td>
+        </tr>
+    </table>
+</body>
+
+</html>
